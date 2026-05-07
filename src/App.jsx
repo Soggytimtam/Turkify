@@ -322,81 +322,49 @@ const PREBUILT_LESSON = {
 };
 
 // ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 // AI LESSON GENERATION
 // ─────────────────────────────────────────────────────────────
 async function generateLesson(song) {
   const mel = MELODIES[song.melodyKey];
   const n   = mel.lineBreaks.length;
-  const sectionSpec =
-    n <= 8  ? "Verse 1 (4 lines), Chorus (4 lines)" :
-    n <= 12 ? "Verse 1 (4 lines), Chorus (4 lines), Verse 2 (4 lines)" :
-              "Verse 1 (6 lines), Chorus (4 lines), Verse 2 (6 lines)";
 
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 2800,
-      messages: [{
-        role: "user",
-        content: `You are an expert Turkish linguist and music educator.
+  try {
+    const res = await fetch("/api/generate-lesson", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        songTitle:   song.title,
+        songTopic:   song.topic,
+        songCefr:    song.cefr,
+        melodyBpm:   mel.bpm,
+        meldSig:     mel.sig,
+        lineCount:   n,
+      }),
+    });
 
-Write ORIGINAL educational Turkish lyrics for the "${song.title}" melody (${mel.bpm} BPM, ${mel.sig}).
-TOPIC: "${song.topic}" | CEFR: ${song.cefr}
-SECTIONS: ${sectionSpec} — exactly ${n} lines total.
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({ error: "Unknown error" }));
+      throw new Error(errorData.error || `Server error ${res.status}`);
+    }
 
-STRICT RULES:
-1. Write ORIGINAL Turkish content that teaches "${song.topic}" — do NOT translate or reference the original song
-2. Each line: 6–9 singable syllables that fit the melody's rhythm naturally
-3. Each line teaches exactly ONE linguistic concept — tag it precisely
-4. Chorus = the single most important phrase to memorize (SRS anchor)
-5. Phonetic guide: write syllables with CAPS on the stressed syllable (e.g. "mehr-hah-BAH")
-6. Cover at least 8 vocabulary items or grammar forms from the topic
+    const parsed = await res.json();
 
-Return ONLY valid JSON with no markdown fences:
-{
-  "objective": "one sentence learning goal",
-  "sections": [
-    {
-      "id": "v1",
-      "label": "Verse 1",
-      "type": "verse",
-      "accent": "${C.sky}",
-      "lines": [
-        { "tr": "Turkish lyric", "ph": "PHO-net-ic GUIDE", "en": "English meaning", "concept": "concept name", "ct": "vocab" }
-      ]
-    },
-    { "id": "ch", "label": "Chorus — SRS Anchor", "type": "chorus", "accent": "${C.gold}", "lines": [] },
-    { "id": "v2", "label": "Verse 2", "type": "verse", "accent": "${C.sky}", "lines": [] }
-  ],
-  "vocabulary": [{ "word": "Turkish word", "meaning": "English meaning" }],
-  "quiz": [{ "q": "Question?", "opts": ["a","b","c","d"], "ans": 0, "ref": "lyric line reference" }]
-}
+    if (!Array.isArray(parsed.sections) || parsed.sections.length < 2) {
+      throw new Error("AI lesson missing sections");
+    }
+    if (!Array.isArray(parsed.quiz) || parsed.quiz.length < 3) {
+      throw new Error("AI lesson missing quiz");
+    }
+    if (!Array.isArray(parsed.vocabulary)) {
+      throw new Error("AI lesson missing vocabulary");
+    }
 
-Constraints: ct must be "vocab" | "grammar" | "phonology". vocabulary: exactly 8 items. quiz: exactly 6 questions, ans is integer 0–3.`
-      }],
-    }),
-  });
+    return parsed;
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`API error ${res.status}${text ? `: ${text.slice(0, 80)}` : ""}`);
+  } catch (err) {
+    throw new Error(err.message || "Failed to generate lesson. Please try again.");
   }
-
-  const data = await res.json();
-  const raw  = data.content.map(b => b.text || "").join("").trim().replace(/^```json|^```|```$/gm, "").trim();
-
-  let parsed;
-  try { parsed = JSON.parse(raw); }
-  catch { throw new Error("AI returned invalid JSON — please try again"); }
-
-  // Validate critical fields
-  if (!Array.isArray(parsed.sections) || parsed.sections.length < 2)  throw new Error("AI lesson missing sections");
-  if (!Array.isArray(parsed.quiz)     || parsed.quiz.length < 3)       throw new Error("AI lesson missing quiz");
-  if (!Array.isArray(parsed.vocabulary))                               throw new Error("AI lesson missing vocabulary");
-
-  return parsed;
 }
 
 // ─────────────────────────────────────────────────────────────
