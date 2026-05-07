@@ -1415,71 +1415,55 @@ function HomeScreen({ onSelectSong, lessons, loadingId, error, onDismissError })
 }
 
 // ─────────────────────────────────────────────────────────────
-// ROOT APPLICATION
+// MAIN APP COMPONENT
 // ─────────────────────────────────────────────────────────────
 export default function App() {
-  const [activeSong,  setActiveSong]  = useState(null);
-  const [activeLesson,setActiveLesson]= useState(null);
-  const [lessons,     setLessons]     = useState({});
-  const [loadingId,   setLoadingId]   = useState(null);
-  const [error,       setError]       = useState(null);
+  const [song, setSong] = useState(null);
+  const [lesson, setLesson] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Update document title based on view
-  useEffect(() => {
-    document.title = activeSong
-      ? `${activeSong.title} — Türkify`
-      : "Türkify — Learn Turkish Through Music";
-  }, [activeSong]);
-
-  const handleSelectSong = useCallback(async (song) => {
-    if (loadingId) return;
-    setError(null);
-
-    // Use cached or prebuilt lesson
-    const cached = song.prebuilt ? PREBUILT_LESSON : lessons[song.id];
-    if (cached) {
-      setActiveSong(song);
-      setActiveLesson(cached);
-      return;
+  async function handleSelect(s) {
+    if (s.prebuilt) {
+      setLesson(PREBUILT_LESSON);
+      setSong(s);
+    } else {
+      setLoading(true);
+      try {
+        const data = await generateLesson(s);
+        setLesson(data);
+        setSong(s);
+      } catch (e) {
+        alert("Gemini failed: " + e.message);
+      } finally {
+        setLoading(false);
+      }
     }
-
-    // Generate via AI
-    setLoadingId(song.id);
-    try {
-      const lesson = await generateLesson(song);
-      setLessons(prev => ({ ...prev, [song.id]: lesson }));
-      setActiveSong(song);
-      setActiveLesson(lesson);
-    } catch (err) {
-      setError(err.message || "Failed to generate lesson. Please try again.");
-    } finally {
-      setLoadingId(null);
-    }
-  }, [loadingId, lessons]);
-
-  const handleBack = useCallback(() => {
-    setActiveSong(null);
-    setActiveLesson(null);
-  }, []);
+  }
 
   return (
-    <>
+    <div style={{ minHeight: "100vh", background: C.bg }}>
       <GlobalStyles />
-      {activeSong && activeLesson ? (
-        <LessonView
-          song={activeSong}
-          lesson={activeLesson}
-          onBack={handleBack}
-        />
+      {!song ? (
+        <div style={{ padding: 40, maxWidth: 800, margin: "0 auto" }}>
+          <h1 style={{ fontFamily: FONT_HEADING, color: C.text }}>TÜRKIFY</h1>
+          <p style={{ color: C.muted, marginBottom: 40 }}>Learn Turkish through the rhythm of music.</p>
+          <div style={{ display: "grid", gap: 20 }}>
+            {SONGS.map(s => (
+              <button 
+                key={s.id} 
+                onClick={() => handleSelect(s)}
+                style={{ padding: 20, textAlign: 'left', border: `1px solid ${C.border}`, borderRadius: 12, background: C.card, cursor: 'pointer' }}
+              >
+                <div style={{ fontSize: 24 }}>{s.emoji} {s.title}</div>
+                <div style={{ color: C.muted }}>{s.topic} • {s.cefr}</div>
+              </button>
+            ))}
+          </div>
+          {loading && <div style={{ marginTop: 20 }}><Spinner /> Generating lesson with Gemini...</div>}
+        </div>
       ) : (
-        <HomeScreen
-          onSelectSong={handleSelectSong}
-          lessons={lessons}
-          loadingId={loadingId}
-          error={error}
-          onDismissError={() => setError(null)}
-        />
+        <LessonView song={song} lesson={lesson} onBack={() => setSong(null)} />
       )}
-    </>
+    </div>
   );
 }
