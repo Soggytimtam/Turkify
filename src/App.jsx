@@ -322,27 +322,25 @@ const PREBUILT_LESSON = {
 };
 
 // ─────────────────────────────────────────────────────────────
-// AI LESSON GENERATION — Updated for Gemini 1.5 Flash
+// AI LESSON GENERATION
 // ─────────────────────────────────────────────────────────────
 async function generateLesson(song) {
   const mel = MELODIES[song.melodyKey];
-  const n = mel.lineBreaks.length;
+  const n   = mel.lineBreaks.length;
   const sectionSpec =
-    n <= 8 ? "Verse 1 (4 lines), Chorus (4 lines)" :
+    n <= 8  ? "Verse 1 (4 lines), Chorus (4 lines)" :
     n <= 12 ? "Verse 1 (4 lines), Chorus (4 lines), Verse 2 (4 lines)" :
               "Verse 1 (6 lines), Chorus (4 lines), Verse 2 (6 lines)";
 
-  // Using your provided Gemini Key
-  const API_KEY = "AIzaSyBqpEP3m09Ga-7gGAlmgEcQnDm-O4cC_8o";
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-
-  const res = await fetch(API_URL, {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: `You are an expert Turkish linguist and music educator.
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 2800,
+      messages: [{
+        role: "user",
+        content: `You are an expert Turkish linguist and music educator.
 
 Write ORIGINAL educational Turkish lyrics for the "${song.title}" melody (${mel.bpm} BPM, ${mel.sig}).
 TOPIC: "${song.topic}" | CEFR: ${song.cefr}
@@ -356,7 +354,7 @@ STRICT RULES:
 5. Phonetic guide: write syllables with CAPS on the stressed syllable (e.g. "mehr-hah-BAH")
 6. Cover at least 8 vocabulary items or grammar forms from the topic
 
-Return ONLY valid JSON:
+Return ONLY valid JSON with no markdown fences:
 {
   "objective": "one sentence learning goal",
   "sections": [
@@ -377,11 +375,7 @@ Return ONLY valid JSON:
 }
 
 Constraints: ct must be "vocab" | "grammar" | "phonology". vocabulary: exactly 8 items. quiz: exactly 6 questions, ans is integer 0–3.`
-        }]
       }],
-      generationConfig: {
-        responseMimeType: "application/json" // Forces Gemini to output pure JSON
-      }
     }),
   });
 
@@ -391,21 +385,16 @@ Constraints: ct must be "vocab" | "grammar" | "phonology". vocabulary: exactly 8
   }
 
   const data = await res.json();
-  
-  // Gemini's data is located in candidates -> content -> parts -> text
+  const raw  = data.content.map(b => b.text || "").join("").trim().replace(/^```json|^```|```$/gm, "").trim();
+
   let parsed;
-  try {
-    const rawContent = data.candidates[0].content.parts[0].text;
-    parsed = JSON.parse(rawContent);
-  } catch (err) {
-    console.error("Gemini Response Error:", data);
-    throw new Error("AI returned invalid JSON — please try again");
-  }
+  try { parsed = JSON.parse(raw); }
+  catch { throw new Error("AI returned invalid JSON — please try again"); }
 
   // Validate critical fields
-  if (!Array.isArray(parsed.sections) || parsed.sections.length < 2) throw new Error("AI lesson missing sections");
-  if (!Array.isArray(parsed.quiz) || parsed.quiz.length < 3) throw new Error("AI lesson missing quiz");
-  if (!Array.isArray(parsed.vocabulary)) throw new Error("AI lesson missing vocabulary");
+  if (!Array.isArray(parsed.sections) || parsed.sections.length < 2)  throw new Error("AI lesson missing sections");
+  if (!Array.isArray(parsed.quiz)     || parsed.quiz.length < 3)       throw new Error("AI lesson missing quiz");
+  if (!Array.isArray(parsed.vocabulary))                               throw new Error("AI lesson missing vocabulary");
 
   return parsed;
 }
@@ -1415,55 +1404,71 @@ function HomeScreen({ onSelectSong, lessons, loadingId, error, onDismissError })
 }
 
 // ─────────────────────────────────────────────────────────────
-// MAIN APP COMPONENT
+// ROOT APPLICATION
 // ─────────────────────────────────────────────────────────────
 export default function App() {
-  const [song, setSong] = useState(null);
-  const [lesson, setLesson] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [activeSong,  setActiveSong]  = useState(null);
+  const [activeLesson,setActiveLesson]= useState(null);
+  const [lessons,     setLessons]     = useState({});
+  const [loadingId,   setLoadingId]   = useState(null);
+  const [error,       setError]       = useState(null);
 
-  async function handleSelect(s) {
-    if (s.prebuilt) {
-      setLesson(PREBUILT_LESSON);
-      setSong(s);
-    } else {
-      setLoading(true);
-      try {
-        const data = await generateLesson(s);
-        setLesson(data);
-        setSong(s);
-      } catch (e) {
-        alert("Gemini failed: " + e.message);
-      } finally {
-        setLoading(false);
-      }
+  // Update document title based on view
+  useEffect(() => {
+    document.title = activeSong
+      ? `${activeSong.title} — Türkify`
+      : "Türkify — Learn Turkish Through Music";
+  }, [activeSong]);
+
+  const handleSelectSong = useCallback(async (song) => {
+    if (loadingId) return;
+    setError(null);
+
+    // Use cached or prebuilt lesson
+    const cached = song.prebuilt ? PREBUILT_LESSON : lessons[song.id];
+    if (cached) {
+      setActiveSong(song);
+      setActiveLesson(cached);
+      return;
     }
-  }
+
+    // Generate via AI
+    setLoadingId(song.id);
+    try {
+      const lesson = await generateLesson(song);
+      setLessons(prev => ({ ...prev, [song.id]: lesson }));
+      setActiveSong(song);
+      setActiveLesson(lesson);
+    } catch (err) {
+      setError(err.message || "Failed to generate lesson. Please try again.");
+    } finally {
+      setLoadingId(null);
+    }
+  }, [loadingId, lessons]);
+
+  const handleBack = useCallback(() => {
+    setActiveSong(null);
+    setActiveLesson(null);
+  }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: C.bg }}>
+    <>
       <GlobalStyles />
-      {!song ? (
-        <div style={{ padding: 40, maxWidth: 800, margin: "0 auto" }}>
-          <h1 style={{ fontFamily: FONT_HEADING, color: C.text }}>TÜRKIFY</h1>
-          <p style={{ color: C.muted, marginBottom: 40 }}>Learn Turkish through the rhythm of music.</p>
-          <div style={{ display: "grid", gap: 20 }}>
-            {SONGS.map(s => (
-              <button 
-                key={s.id} 
-                onClick={() => handleSelect(s)}
-                style={{ padding: 20, textAlign: 'left', border: `1px solid ${C.border}`, borderRadius: 12, background: C.card, cursor: 'pointer' }}
-              >
-                <div style={{ fontSize: 24 }}>{s.emoji} {s.title}</div>
-                <div style={{ color: C.muted }}>{s.topic} • {s.cefr}</div>
-              </button>
-            ))}
-          </div>
-          {loading && <div style={{ marginTop: 20 }}><Spinner /> Generating lesson with Gemini...</div>}
-        </div>
+      {activeSong && activeLesson ? (
+        <LessonView
+          song={activeSong}
+          lesson={activeLesson}
+          onBack={handleBack}
+        />
       ) : (
-        <LessonView song={song} lesson={lesson} onBack={() => setSong(null)} />
+        <HomeScreen
+          onSelectSong={handleSelectSong}
+          lessons={lessons}
+          loadingId={loadingId}
+          error={error}
+          onDismissError={() => setError(null)}
+        />
       )}
-    </div>
+    </>
   );
 }
