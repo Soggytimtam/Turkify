@@ -322,6 +322,248 @@ const PREBUILT_LESSON = {
 };
 
 // ─────────────────────────────────────────────────────────────
+// PRE-BUILT LESSON — Waltz of Numbers / Numbers 1–10
+// ─────────────────────────────────────────────────────────────
+const LESSON_BIRTHDAY = {
+  objective: "Count to ten in Turkish and use numbers in everyday context (CEFR A1)",
+  sections: [
+    {
+      id: "v1", label: "Verse 1", type: "verse", accent: "#c8985a",
+      lines: [
+        { tr: "Bir, iki, üç, dört say,",        ph: "beer, ee-KEE, uch, dort SIGH",            en: "One, two, three, four, count,",      concept: "numbers 1–4",         ct: "vocab"   },
+        { tr: "Beş, altı, yedi bil!",            ph: "besh, al-TUH, yeh-DEE beel",              en: "Five, six, seven, know them!",        concept: "numbers 5–7",         ct: "vocab"   },
+        { tr: "Sekiz, dokuz, ona gel,",          ph: "seh-KEEZ, doh-KOOZ, OH-nah gel",          en: "Eight, nine, come to ten,",           concept: "numbers 8–10",        ct: "vocab"   },
+        { tr: "Türkçe saymayı biliyorum.",       ph: "TURK-cheh say-MAH-yuh bee-lee-YOR-um",    en: "I know how to count in Turkish.",     concept: "infinitive -mayı",    ct: "grammar" },
+      ],
+    },
+    {
+      id: "ch", label: "Chorus — SRS Anchor", type: "chorus", accent: "#6aaed6",
+      lines: [
+        { tr: "On parmak, on numara,",           ph: "ON par-MAK, on noo-mah-RAH",              en: "Ten fingers, ten numbers,",           concept: "on = ten",            ct: "vocab"   },
+        { tr: "Say benimle hep beraber!",        ph: "SIGH beh-NEEM-leh hep beh-rah-BEHR",      en: "Count with me together!",             concept: "beraber = together",  ct: "vocab"   },
+        { tr: "On parmak, on numara,",           ph: "ON par-MAK, on noo-mah-RAH",              en: "Ten fingers, ten numbers,",           concept: "SRS repeat",          ct: "vocab"   },
+        { tr: "Birden ona öğrendim!",            ph: "beer-DEN OH-nah ur-ren-DEEM",             en: "From one to ten, I've learned!",      concept: "ablative -den",       ct: "grammar" },
+      ],
+    },
+  ],
+  vocabulary: [
+    { word: "bir",    meaning: "one"   },
+    { word: "iki",    meaning: "two"   },
+    { word: "üç",    meaning: "three" },
+    { word: "dört",  meaning: "four"  },
+    { word: "beş",   meaning: "five"  },
+    { word: "altı",  meaning: "six"   },
+    { word: "yedi",  meaning: "seven" },
+    { word: "sekiz", meaning: "eight" },
+  ],
+  quiz: [
+    { q: "What is 'beş' in English?",             opts: ["Three","Five","Seven","Nine"],                              ans: 1, ref: "Beş, altı, yedi bil!" },
+    { q: "How do you say 'ten' in Turkish?",      opts: ["Sekiz","Yedi","Dokuz","On"],                               ans: 3, ref: "On parmak, on numara," },
+    { q: "What does 'saymayı biliyorum' mean?",   opts: ["I am counting","Let's count","I know how to count","Count!"], ans: 2, ref: "Türkçe saymayı biliyorum." },
+    { q: "Which number comes after 'sekiz'?",     opts: ["Yedi","Altı","Dokuz","On"],                                ans: 2, ref: "Sekiz, dokuz, ona gel," },
+    { q: "'Birden ona' means:",                   opts: ["One by one","From one to ten","Before ten","After one"],   ans: 1, ref: "Birden ona öğrendim!" },
+    { q: "What is 'dört' in English?",            opts: ["Two","Three","Four","Five"],                               ans: 2, ref: "Bir, iki, üç, dört say," },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// PRE-BUILT LESSON — Bell Rhythm / Present Tense Verbs
+// ─────────────────────────────────────────────────────────────
+const LESSON_JINGLE = {
+  objective: "Conjugate Turkish present-continuous verbs with the -iyor suffix (CEFR A2)",
+  sections: [
+    {
+      id: "v1", label: "Verse 1", type: "verse", accent: "#5aaa7a",
+      lines: [
+        { tr: "Ben her gün çalışıyorum,",        ph: "ben hehr gun cha-LUH-shuh-yor-UM",        en: "I work / study every day,",           concept: "1st person -iyorum",  ct: "grammar" },
+        { tr: "Sen müzik dinliyorsun,",          ph: "sen mew-ZEEK din-lee-YOR-sun",             en: "You are listening to music,",         concept: "2nd person -iyor",    ct: "grammar" },
+        { tr: "O kitabı okuyor,",                ph: "oh kee-TAH-buh oh-KOO-yor",               en: "He / she is reading the book,",       concept: "3rd person -iyor",    ct: "grammar" },
+        { tr: "Biz birlikte konuşuyoruz.",       ph: "beez beer-LEEK-teh koh-noo-shoo-YOR-uz",  en: "We are all talking together.",        concept: "1st plural -iyoruz",  ct: "grammar" },
+      ],
+    },
+    {
+      id: "ch", label: "Chorus — SRS Anchor", type: "chorus", accent: "#c8985a",
+      lines: [
+        { tr: "Ne yapıyorsun şimdi?",            ph: "neh yah-PUH-yor-sun SHEEM-dee",           en: "What are you doing right now?",       concept: "question with -iyor", ct: "grammar" },
+        { tr: "Türkçe öğreniyorum!",             ph: "TURK-cheh ur-reh-NEE-yor-um",             en: "I am learning Turkish!",              concept: "SRS anchor",          ct: "vocab"   },
+        { tr: "Ne yapıyorsun şimdi?",            ph: "neh yah-PUH-yor-sun SHEEM-dee",           en: "What are you doing right now?",       concept: "SRS repeat",          ct: "grammar" },
+        { tr: "Söyle, söyle, söylüyorum!",       ph: "soy-LEH, soy-LEH, soy-LUE-yor-um",       en: "Say it, say it, I am saying it!",     concept: "present continuous",  ct: "grammar" },
+      ],
+    },
+  ],
+  vocabulary: [
+    { word: "çalışmak",  meaning: "to work / to study" },
+    { word: "dinlemek",  meaning: "to listen"           },
+    { word: "okumak",    meaning: "to read"             },
+    { word: "konuşmak",  meaning: "to speak / to talk"  },
+    { word: "yapmak",    meaning: "to do / to make"     },
+    { word: "öğrenmek",  meaning: "to learn"            },
+    { word: "söylemek",  meaning: "to say / to tell"    },
+    { word: "şimdi",     meaning: "now"                 },
+  ],
+  quiz: [
+    { q: "Which suffix marks present continuous in Turkish?",  opts: ["-dı","-iyor","-ecek","-mış"],                         ans: 1, ref: "Ben her gün çalışıyorum," },
+    { q: "What does 'dinliyorsun' mean?",                      opts: ["I listen","You are listening","He listens","We listen"], ans: 1, ref: "Sen müzik dinliyorsun," },
+    { q: "The ending '-iyoruz' means:",                        opts: ["I am …","You are …","He is …","We are …"],             ans: 3, ref: "Biz birlikte konuşuyoruz." },
+    { q: "What does 'öğreniyorum' mean?",                      opts: ["I learned","I will learn","I am learning","I learn"],  ans: 2, ref: "Türkçe öğreniyorum!" },
+    { q: "How do you say 'What are you doing?'",               opts: ["Ne yaptın?","Ne yapacaksın?","Ne yapıyorsun?","Nereye gidiyorsun?"], ans: 2, ref: "Ne yapıyorsun şimdi?" },
+    { q: "What does 'şimdi' mean?",                            opts: ["Yesterday","Tomorrow","Always","Now"],                 ans: 3, ref: "Ne yapıyorsun şimdi?" },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// PRE-BUILT LESSON — City Beat / Past Tense (-dı)
+// ─────────────────────────────────────────────────────────────
+const LESSON_HIPHOP = {
+  objective: "Narrate past events using the Turkish -dı / -tı simple past tense (CEFR B1)",
+  sections: [
+    {
+      id: "v1", label: "Verse 1", type: "verse", accent: "#9b7fe8",
+      lines: [
+        { tr: "Dün sabah erken kalktım,",        ph: "DUN sah-BAH ehr-KEN kalk-TUM",            en: "Yesterday morning I got up early,",   concept: "-tım past 1st person",  ct: "grammar" },
+        { tr: "Kahvemi alıp içtim,",             ph: "kah-VEH-mee ah-LUP eech-TEEM",            en: "I grabbed my coffee and drank it,",   concept: "-ip verb chain",        ct: "grammar" },
+        { tr: "Arkadaşımı aradım,",              ph: "ar-kah-DAH-shuh-muh ah-rah-DUM",           en: "I called my friend,",                 concept: "-dım past 1st",         ct: "grammar" },
+        { tr: "Şehirde buluştuk biz.",           ph: "sheh-HEER-deh boo-loosh-TOOK beez",        en: "We met up in the city.",              concept: "-tuk past 1st plural",  ct: "grammar" },
+      ],
+    },
+    {
+      id: "ch", label: "Chorus — SRS Anchor", type: "chorus", accent: "#c8985a",
+      lines: [
+        { tr: "Dün ne yaptın, nereye gittin?",   ph: "DUN neh yap-TUN, neh-REH-yeh geet-TEEN",  en: "Yesterday what did you do, where did you go?", concept: "past question -tın/-tin", ct: "grammar" },
+        { tr: "Her şeyi dün yaptım ben!",        ph: "hehr sheh-YEE DUN yap-TUM ben",            en: "I did everything yesterday!",         concept: "SRS anchor",            ct: "grammar" },
+        { tr: "Dün ne yaptın, nereye gittin?",   ph: "DUN neh yap-TUN, neh-REH-yeh geet-TEEN",  en: "Yesterday what did you do, where did you go?", concept: "SRS repeat",          ct: "grammar" },
+        { tr: "Her şeyi dün yaptım ben!",        ph: "hehr sheh-YEE DUN yap-TUM ben",            en: "I did everything yesterday!",         concept: "past tense review",     ct: "grammar" },
+      ],
+    },
+    {
+      id: "v2", label: "Verse 2", type: "verse", accent: "#9b7fe8",
+      lines: [
+        { tr: "Akşam eve geç döndüm,",           ph: "ak-SHAM eh-VEH gech dun-DUM",             en: "In the evening I came home late,",    concept: "-düm past 1st",         ct: "grammar" },
+        { tr: "Yemek yedim, müzik duydum,",      ph: "yeh-MEK yeh-DEEM, mew-ZEEK dooy-DOOM",    en: "I ate food, I heard music,",          concept: "past narration pair",   ct: "grammar" },
+        { tr: "Çok yoruldum ama güldüm,",        ph: "chok yoh-ROOL-doom ah-MAH gul-DUM",        en: "I was very tired but I laughed,",     concept: "contrast with ama",     ct: "grammar" },
+        { tr: "Güzel bir gün geçirdim.",         ph: "gew-ZEL beer gun geh-CHEER-deem",          en: "I had a beautiful day.",              concept: "experience -dim",       ct: "grammar" },
+      ],
+    },
+  ],
+  vocabulary: [
+    { word: "dün",       meaning: "yesterday"             },
+    { word: "kalkmak",   meaning: "to get up / to rise"   },
+    { word: "içmek",     meaning: "to drink"              },
+    { word: "aramak",    meaning: "to call / to look for" },
+    { word: "buluşmak",  meaning: "to meet up"            },
+    { word: "dönmek",    meaning: "to return / come back" },
+    { word: "yemek",     meaning: "to eat / food"         },
+    { word: "geçirmek",  meaning: "to spend (time)"       },
+  ],
+  quiz: [
+    { q: "Which suffix forms the simple past in Turkish?",           opts: ["-iyor","-ecek","-dı / -tı","-mış"],            ans: 2, ref: "Dün sabah erken kalktım," },
+    { q: "What does 'gittim' mean?",                                 opts: ["I go","I went","I will go","I am going"],       ans: 1, ref: "nereye gittin?" },
+    { q: "What does 'dün' mean?",                                    opts: ["Today","Tomorrow","Yesterday","Last week"],     ans: 2, ref: "Dün ne yaptın," },
+    { q: "The ending '-tuk / -tık' (e.g. buluştuk) means:",         opts: ["I …","You …","He / she …","We …"],             ans: 3, ref: "Şehirde buluştuk biz." },
+    { q: "What does 'yoruldum' mean?",                               opts: ["I laughed","I slept","I was tired","I worked"], ans: 2, ref: "Çok yoruldum ama güldüm," },
+    { q: "Which sentence is in the past tense?",                     opts: ["Gidiyorum","Gideceğim","Gittim","Gidebilirim"], ans: 2, ref: "Her şeyi dün yaptım ben!" },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// PRE-BUILT LESSON — Modal Ballad / Noun Cases
+// ─────────────────────────────────────────────────────────────
+const LESSON_SCARBOROUGH = {
+  objective: "Master the four core Turkish noun case suffixes: dative, ablative, accusative, and locative (CEFR B1)",
+  sections: [
+    {
+      id: "v1", label: "Verse", type: "verse", accent: "#6888d8",
+      lines: [
+        { tr: "Eve gidiyorum, evden geliyorum,", ph: "EH-veh gee-dee-YOR-um, ev-DEN geh-lee-YOR-um", en: "I go home, I come from home,", concept: "dative -e, ablative -den", ct: "grammar" },
+        { tr: "Seni bekliyorum burada.",         ph: "seh-NEE bek-lee-YOR-um boo-rah-DAH",            en: "I am waiting for you here.",  concept: "accusative -i, locative -da", ct: "grammar" },
+      ],
+    },
+    {
+      id: "ch", label: "Chorus — SRS Anchor", type: "chorus", accent: "#c8985a",
+      lines: [
+        { tr: "Sana, senden, seni, sende —",    ph: "sah-NAH, sen-DEN, seh-NEE, sen-DEH",           en: "To you, from you, you (obj.), at you —", concept: "all four cases", ct: "grammar" },
+        { tr: "Türkçe haller öğrendim!",         ph: "TURK-cheh hal-LEHR ur-ren-DEEM",               en: "I have learned Turkish cases!",  concept: "SRS anchor",     ct: "vocab"   },
+      ],
+    },
+  ],
+  vocabulary: [
+    { word: "-e / -a",     meaning: "dative: to, toward"          },
+    { word: "-den / -dan", meaning: "ablative: from, out of"      },
+    { word: "-i / -ı",    meaning: "accusative: direct object"   },
+    { word: "-de / -da",  meaning: "locative: in, at, on"        },
+    { word: "eve",         meaning: "home — dative form (to home)" },
+    { word: "evden",       meaning: "from home — ablative form"   },
+    { word: "seni",        meaning: "you — accusative form"       },
+    { word: "burada",      meaning: "here — locative: in this place" },
+  ],
+  quiz: [
+    { q: "Which suffix means 'to' or 'toward' (dative)?",               opts: ["-den","-de","-e","-i"],                    ans: 2, ref: "Eve gidiyorum, evden geliyorum," },
+    { q: "Which suffix means 'from' (ablative)?",                        opts: ["-e","-den","-i","-de"],                    ans: 1, ref: "Eve gidiyorum, evden geliyorum," },
+    { q: "What case does the '-i / -ı' suffix mark?",                    opts: ["Dative","Locative","Ablative","Accusative"], ans: 3, ref: "Seni bekliyorum burada."         },
+    { q: "The locative suffix '-de / -da' means:",                       opts: ["from","to","in / at / on","of"],            ans: 2, ref: "Seni bekliyorum burada."         },
+    { q: "What does 'evden' mean?",                                      opts: ["to home","in home","at home","from home"],  ans: 3, ref: "Eve gidiyorum, evden geliyorum," },
+    { q: "In 'sana, senden, seni, sende', how many cases are shown?",   opts: ["One","Two","Three","Four"],                 ans: 3, ref: "Sana, senden, seni, sende —"    },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// PRE-BUILT LESSON — Sunny Day / Adjectives & Colors
+// ─────────────────────────────────────────────────────────────
+const LESSON_SUNSHINE = {
+  objective: "Describe the world using Turkish color words and adjective placement (CEFR A2)",
+  sections: [
+    {
+      id: "v1", label: "Verse 1", type: "verse", accent: "#e88a2e",
+      lines: [
+        { tr: "Mavi gökyüzü parlıyor,",          ph: "mah-VEE gok-yew-ZEW par-LUH-yor",         en: "The blue sky is shining,",           concept: "mavi = blue",            ct: "vocab"   },
+        { tr: "Sarı güneş gülümsüyor,",          ph: "sah-RUH gew-NESH gew-lum-SUE-yor",         en: "The yellow sun is smiling,",         concept: "sarı = yellow",          ct: "vocab"   },
+        { tr: "Yeşil çimenler büyüyor,",         ph: "yeh-SHEEL chee-MEN-lehr bew-YEW-yor",      en: "Green grasses are growing,",         concept: "yeşil = green",          ct: "vocab"   },
+        { tr: "Güzel bir gün başlıyor.",          ph: "gew-ZEL beer GUN bash-LUH-yor",             en: "A beautiful day is beginning.",      concept: "adjective before noun",  ct: "grammar" },
+      ],
+    },
+    {
+      id: "ch", label: "Chorus — SRS Anchor", type: "chorus", accent: "#c8985a",
+      lines: [
+        { tr: "Kırmızı, mavi, yeşil,",           ph: "kir-MIH-zuh, mah-VEE, yeh-SHEEL",          en: "Red, blue, green,",                  concept: "color vocabulary",       ct: "vocab"   },
+        { tr: "Renkleri söyle benimle!",          ph: "ren-kleh-REE soy-LEH beh-NEEM-leh",         en: "Say the colors with me!",            concept: "imperative söyle",       ct: "grammar" },
+        { tr: "Kırmızı, mavi, yeşil,",           ph: "kir-MIH-zuh, mah-VEE, yeh-SHEEL",          en: "Red, blue, green,",                  concept: "SRS repeat",             ct: "vocab"   },
+        { tr: "Türkçe renk öğrendim ben!",       ph: "TURK-cheh renk ur-ren-DEEM ben",            en: "I have learned colors in Turkish!",  concept: "renk = color",           ct: "vocab"   },
+      ],
+    },
+  ],
+  vocabulary: [
+    { word: "mavi",     meaning: "blue"              },
+    { word: "sarı",     meaning: "yellow"            },
+    { word: "yeşil",    meaning: "green"             },
+    { word: "kırmızı",  meaning: "red"               },
+    { word: "beyaz",    meaning: "white"             },
+    { word: "siyah",    meaning: "black"             },
+    { word: "güzel",    meaning: "beautiful / nice"  },
+    { word: "renk",     meaning: "color"             },
+  ],
+  quiz: [
+    { q: "What color is 'mavi'?",                          opts: ["Green","Yellow","Red","Blue"],             ans: 3, ref: "Mavi gökyüzü parlıyor,"    },
+    { q: "What color is 'sarı'?",                          opts: ["Blue","Yellow","White","Green"],           ans: 1, ref: "Sarı güneş gülümsüyor,"    },
+    { q: "What color is 'yeşil'?",                         opts: ["Red","Black","Green","Blue"],              ans: 2, ref: "Yeşil çimenler büyüyor,"   },
+    { q: "What does 'güzel' mean?",                        opts: ["Big","Small","Beautiful","Fast"],          ans: 2, ref: "Güzel bir gün başlıyor."   },
+    { q: "What does 'kırmızı' mean?",                     opts: ["Yellow","Green","Blue","Red"],             ans: 3, ref: "Kırmızı, mavi, yeşil,"     },
+    { q: "Where do adjectives appear relative to the noun in Turkish?", opts: ["After the noun","Before the noun","After the verb","At the end of the sentence"], ans: 1, ref: "Güzel bir gün başlıyor." },
+  ],
+};
+
+// ─────────────────────────────────────────────────────────────
+// PREBUILT LESSONS MAP — keyed by song id
+// ─────────────────────────────────────────────────────────────
+const PREBUILT_LESSONS = {
+  twinkle:     PREBUILT_LESSON,
+  birthday:    LESSON_BIRTHDAY,
+  jingle:      LESSON_JINGLE,
+  hiphop:      LESSON_HIPHOP,
+  scarborough: LESSON_SCARBOROUGH,
+  sunshine:    LESSON_SUNSHINE,
+};
+
+// ─────────────────────────────────────────────────────────────
 // AI LESSON GENERATION
 // ─────────────────────────────────────────────────────────────
 async function generateLesson(song) {
@@ -1337,7 +1579,7 @@ function HomeScreen({ onSelectSong, lessons, loadingId, error, onDismissError })
               <SongCard
                 song={song}
                 onSelect={onSelectSong}
-                ready={!!(lessons[song.id] || song.prebuilt)}
+                ready={!!(lessons[song.id] || PREBUILT_LESSONS[song.id])}
                 loading={loadingId === song.id}
               />
             </div>
@@ -1424,8 +1666,8 @@ export default function App() {
     if (loadingId) return;
     setError(null);
 
-    // Use cached or prebuilt lesson
-    const cached = song.prebuilt ? PREBUILT_LESSON : lessons[song.id];
+    // Use prebuilt or previously generated lesson
+    const cached = PREBUILT_LESSONS[song.id] || lessons[song.id];
     if (cached) {
       setActiveSong(song);
       setActiveLesson(cached);
